@@ -2,7 +2,15 @@
 - name: "Apache installation using docker"
   hosts: prod
   become: true
+  vars_files:
+    - files/secrets/credentials.vault
   pre_tasks:
+    - name: Add ansible SSH public key to remote host <authorized_key> file
+      authorized_key:
+        user: admin
+        state: present
+        key: "{{ lookup('file', '/home/admin/.ssh/id_rsa.pub') }}"
+
     - name: Install EPEL repo, git, wget
       yum:
         name: "{{ item }}"
