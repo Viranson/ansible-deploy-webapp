@@ -18,10 +18,32 @@
     - name: Install docker python
       pip: name=docker-py
 
+    - name: Install git and wget
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - wget
+        - git
+      when: ansible_distribution == "CentOS"
+
   tasks:
+    - name: Create website directory if it does not exist for docker volume binding
+      file:
+        path: /data/webapp/html
+        state: directory
+        mode: '0755'
+
+    - name: Generate website file from template to host directory
+      template:
+        src: templates/index.html.j2
+        dest: /data/webapp/html/index.html
+
     - name: Create Apache container
       docker_container:
         name: webapp
         image: httpd
         ports:
           - "80:80"
+        volumes:
+          - "/data/webapp/html:/usr/local/apache2/htdocs/"
