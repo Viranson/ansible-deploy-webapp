@@ -3,8 +3,14 @@
   hosts: prod
   become: true
   pre_tasks:
-    - name: Install EPEL repo
-      package: name=epel-release state=present
+    - name: Install EPEL repo, git, wget
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - epel-release
+        - wget
+        - git
       when: ansible_distribution == "CentOS"
 
     - name: download pip script
@@ -17,15 +23,6 @@
 
     - name: Install docker python
       pip: name=docker-py
-
-    - name: Install git and wget
-      yum:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - wget
-        - git
-      when: ansible_distribution == "CentOS"
 
   tasks:
     - name: Create website directory if it does not exist for docker volume binding
