@@ -1,0 +1,7 @@
+---
+web_dir_host_path: /data/webapp/html
+apache_docker_image: httpd
+host_port: 8000
+system_user: admin
+public_key_file_name: id_rsa.pub
+public_key_full_path: /home/{{ system_user }}/.ssh/

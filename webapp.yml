@@ -1,0 +1,36 @@
+---
+- name: "Apache installation using docker"
+  hosts: prod
+  become: true
+  roles:
+    - webapp
+  vars_files:
+    - files/secrets/credentials.vault
+
+  pre_tasks:
+#     - name: Add ansible SSH public key to remote host <authorized_key> file
+#       authorized_key:
+#         user: admin
+#         state: present
+#         key: "{{ lookup('file', '{{ public_key_path }}/{{ public_key_file_name }}') }}"
+
+    - name: Install EPEL repo, git, wget
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - epel-release
+        - wget
+        - git
+      when: ansible_distribution == "CentOS"
+
+    - name: download pip script
+      get_url:
+        url: https://bootstrap.pypa.io/pip/2.7/get-pip.py
+        dest: /tmp/get-pip.py
+
+    - name: install python-pip
+      command: python2.7 /tmp/get-pip.py
+
+    - name: Install docker python
+      pip: name=docker-py
