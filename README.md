@@ -1,11 +1,11 @@
 
 # Setup
 - [x] Provision an instance for Ansible
-- [x] Install Ansible (*https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html*)
+- [x] Follow the [Ansible Installation Guide](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html) to install and configure ansible on the controller node.
 - [x] Clone this repo : **git clone https://github.com/Viranson/ansible-deploy-webapp.git && cd ansible-deploy-webapp**
  - [x] Provision a client Linux host based on CentOS
  - [x]  Install docker and docker-compose
- - [x] On the ansible instance, edit *inventory.yml* file and update the client host IP address on line "**ansible_host**"
+ - [x] On the ansible controller node, edit *inventory.yml* file and update the client host IP address on line "**ansible_host**"
  - [x] Edit *group_vars/prod.yml* file and update the client host user on line "**ansible_user**"
  - [x] Remove files/secrets/credentials.vault
  - [x] Create new file *files/secrets/credentials.vault* and edit with the following content "ansible_password: clientpass". (*Replace "clientpass" with your client instance real password*)
